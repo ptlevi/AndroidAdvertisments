@@ -17,7 +17,7 @@ public class HomeActivity extends Activity {
 
         setContentView(R.layout.activity_home);
 
-        int SPLASH_TIME_OUT = 4000;
+        int SPLASH_TIME_OUT = 2500;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
