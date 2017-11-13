@@ -16,7 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends Activity {
 
-    private static int SPLASH_TIME_OUT = 4000;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,16 +24,7 @@ public class MainActivity extends Activity {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        setContentView(R.layout.activity_home);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
-                startActivity(homeIntent);
-                finish();
-            }
-        },SPLASH_TIME_OUT);
+        setContentView(R.layout.activity_main);
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("temp");
