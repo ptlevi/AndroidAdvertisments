@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
-                Log.w("DEBUG", "Failed to eat this burger.", error.toException());
+                Log.w("DEBUG", "skidiki pam pam to eat this burger.", error.toException());
             }
         });
     }
