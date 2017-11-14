@@ -5,6 +5,7 @@ package com.ptlevi.sapientia.ms.project;
  */
 
 public class User {
+    private String id;
     private String firstname;
     private String lastname;
     private String email;
@@ -17,6 +18,14 @@ public class User {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.password = password;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getFirstname() {

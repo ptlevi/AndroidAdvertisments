@@ -6,13 +6,25 @@ package com.ptlevi.sapientia.ms.project;
 
 import com.google.android.gms.maps.GoogleMap;
 
-public class Advertisment {
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 
+import java.io.Serializable;
+
+@Entity
+public class Advertisment  implements Serializable {
+
+    @PrimaryKey(autoGenerate = true)
+    private String id;
     private String title;
     private String description;
     private String image;
     private GoogleMap googleMap;
     private User creator;
+
+    public Advertisment() {
+    }
 
     public Advertisment(String title, String description, String image, GoogleMap googleMap, User creator) {
         this.title = title;
@@ -20,6 +32,14 @@ public class Advertisment {
         this.image = image;
         this.googleMap = googleMap;
         this.creator = creator;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
