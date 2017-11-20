@@ -26,14 +26,14 @@
             android:id="@+id/TVtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/IVprofile"
+            android:layout_toEndOf="@+id/IVprofile"
             android:text="Title"
             android:textSize="25dp"/>
         <TextView
             android:id="@+id/TVdetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/IVprofile"
+            android:layout_toEndOf="@+id/IVprofile"
             android:layout_below="@id/TVtitle"
             android:text="Details" />
     </RelativeLayout>
