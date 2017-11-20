@@ -49,7 +49,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         String title = advertismentList.get(position).getTitle();
         String description = advertismentList.get(position).getDescription();
         holder.TVtitle.setText(title);
-        holder.TVtitle.setText(description);
+        holder.TVdetail.setText(description);
     }
 
     // total number of rows

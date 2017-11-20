@@ -36,19 +36,21 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.ItemCl
 
         ArrayList<Advertisment> advertisments = new ArrayList<Advertisment>();
         Advertisment advertisment = new Advertisment();
-        advertisment.setTitle("Itt a cim");
-        advertisment.setDescription("Itt a leiras");
+        advertisment.setTitle("Itt a cim1");
+        advertisment.setDescription("Itt a leiras1");
         advertisments.add(advertisment);
 
         Advertisment advertisment2 = new Advertisment();
         advertisment2.setTitle("Itt a cim2");
         advertisment2.setDescription("Itt a leiras2");
         advertisments.add(advertisment2);
+        advertisments.add(advertisment);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewAdapter = new RecyclerViewAdapter(this, advertisments);
         recyclerViewAdapter.setClickListener(this);
         recyclerView.setAdapter(recyclerViewAdapter);
+        recyclerViewAdapter.notifyDataSetChanged();
 
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
