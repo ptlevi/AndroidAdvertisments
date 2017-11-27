@@ -68,8 +68,8 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.ItemCl
                     //TODO
                     // go to the add activity
                     Toast.makeText(MainActivity.this, "addActivity", Toast.LENGTH_SHORT).show();
-                    //Intent addIntent = new Intent(MainActivity.this, AddActivity.class);
-                    //startActivity(addIntent);
+                    Intent addIntent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(addIntent);
                 } else {
                     //TODO
                     // go to the login activity
