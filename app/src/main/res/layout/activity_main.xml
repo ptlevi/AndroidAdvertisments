@@ -24,6 +24,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/BTadd"
             android:layout_gravity="center"
             android:background="@null"
             android:text="Add"
@@ -64,7 +65,7 @@
         android:id="@+id/rv_items"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="70dp"
+        app:layout_constraintTop_toBottomOf="@+id/ll"
         />
 
 </android.support.constraint.ConstraintLayout>

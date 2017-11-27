@@ -11,8 +11,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,12 +28,15 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.ItemCl
 
     private RecyclerViewAdapter recyclerViewAdapter;
     private RecyclerView recyclerView;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+
+        mAuth = FirebaseAuth.getInstance();
 
         recyclerView = (RecyclerView) findViewById(R.id.rv_items);
 
@@ -51,6 +57,28 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.ItemCl
         recyclerViewAdapter.setClickListener(this);
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerViewAdapter.notifyDataSetChanged();
+
+
+        Button BTadd = findViewById(R.id.BTadd);
+
+        BTadd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mAuth.getCurrentUser() != null){
+                    //TODO
+                    // go to the add activity
+                    Toast.makeText(MainActivity.this, "addActivity", Toast.LENGTH_SHORT).show();
+                    //Intent addIntent = new Intent(MainActivity.this, AddActivity.class);
+                    //startActivity(addIntent);
+                } else {
+                    //TODO
+                    // go to the login activity
+                    Toast.makeText(MainActivity.this, "LoginActivity", Toast.LENGTH_SHORT).show();
+                    Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(loginIntent);
+                }
+            }
+        });
 
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
