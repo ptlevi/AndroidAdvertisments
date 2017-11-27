@@ -58,23 +58,47 @@
                     android:maxLines="1"
                     android:singleLine="true" />
 
-            <Button
-                android:id="@+id/BTemailSignIn"
-                style="?android:textAppearanceSmall"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/action_sign_in"
-                android:textStyle="bold" />
+                android:weightSum="2"
+                android:gravity="center">
+                <Button
+                    android:id="@+id/BTemailSignIn"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/action_sign_in"
+                    android:textStyle="bold" />
+                <Button
+                    android:id="@+id/BTemailSignUp"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/action_sign_up"
+                    android:textStyle="bold"
+                    android:layout_toRightOf="@+id/BTemailSignIn"/>
+            </RelativeLayout>
 
             <Button
-                android:id="@+id/BTemailSignOut"
+                android:id="@+id/BTsignOut"
                 style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:text="Sign out"
                 android:textStyle="bold" />
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/BTgoogleSignIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:visibility="visible" />
 
         </LinearLayout>
     </ScrollView>
