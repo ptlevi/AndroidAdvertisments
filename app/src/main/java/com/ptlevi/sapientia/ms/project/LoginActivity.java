@@ -48,6 +48,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.ProviderQueryResult;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -305,11 +307,15 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("LoginActivity", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             //updateUI(user);
+                            Toast.makeText(LoginActivity.this, "Successfully signed in.",Toast.LENGTH_SHORT).show();
+                            hideProgressDialog();
+                            finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("LoginActivity", "signInWithCredential:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Firebase google Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+                            hideProgressDialog();
                             //updateUI(null);
                         }
 
@@ -335,6 +341,31 @@ public class LoginActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account);
                 Toast.makeText(LoginActivity.this, "Google sign in was successfull.",
                         Toast.LENGTH_SHORT).show();
+
+
+                //var user = firebase.auth().currentUser;
+                FirebaseUser user = mAuth.getCurrentUser();
+                String email, uid;
+
+                if (user != null) {
+                    email = user.getEmail();
+                    uid = user.getUid();  // The user's ID, unique to the Firebase project. Do NOT use
+                    Toast.makeText(LoginActivity.this, "email: " + email + ", id: " + uid,
+                            Toast.LENGTH_SHORT).show();
+                    // this value to authenticate with your backend server, if
+                    // you have one. Use User.getToken() instead.
+                } else {
+                    email = "nincs";
+                    uid = "nem jo";
+                }
+
+                // Write a message to the database
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("user");
+
+                myRef.child(uid).child("email").setValue(email);
+
+                finish();
             } else {
                 // Google Sign In failed, update UI appropriately
                 // [START_EXCLUDE]

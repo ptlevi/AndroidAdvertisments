@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,6 +53,10 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.ItemCl
         advertisments.add(advertisment2);
         advertisments.add(advertisment);
 
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference myRef = database.getReference("advertisments");
+//        String key = myRef.push().getKey();
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewAdapter = new RecyclerViewAdapter(this, advertisments);
         recyclerViewAdapter.setClickListener(this);
@@ -68,7 +73,7 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.ItemCl
                     //TODO
                     // go to the add activity
                     Toast.makeText(MainActivity.this, "addActivity", Toast.LENGTH_SHORT).show();
-                    Intent addIntent = new Intent(MainActivity.this, LoginActivity.class);
+                    Intent addIntent = new Intent(MainActivity.this, AddActivity.class);
                     startActivity(addIntent);
                 } else {
                     //TODO
@@ -77,6 +82,19 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.ItemCl
                     Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(loginIntent);
                 }
+            }
+        });
+
+        ImageView IVprofile = findViewById(R.id.IVprofile);
+
+        IVprofile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO
+                // go to the login activity
+                Toast.makeText(MainActivity.this, "LoginActivity", Toast.LENGTH_SHORT).show();
+                Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(loginIntent);
             }
         });
 

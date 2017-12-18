@@ -12,10 +12,8 @@ import android.arch.persistence.room.PrimaryKey;
 
 import java.io.Serializable;
 
-@Entity
-public class Advertisment  implements Serializable {
+public class Advertisment {
 
-    @PrimaryKey(autoGenerate = true)
     private String id;
     private String title;
     private String description;
