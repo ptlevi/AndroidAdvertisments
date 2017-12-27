@@ -41,21 +41,7 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.ItemCl
 
         recyclerView = (RecyclerView) findViewById(R.id.rv_items);
 
-        ArrayList<Advertisment> advertisments = new ArrayList<Advertisment>();
-        Advertisment advertisment = new Advertisment();
-        advertisment.setTitle("Itt a cim1");
-        advertisment.setDescription("Itt a leiras1");
-        advertisments.add(advertisment);
-
-        Advertisment advertisment2 = new Advertisment();
-        advertisment2.setTitle("Itt a cim2");
-        advertisment2.setDescription("Itt a leiras2");
-        advertisments.add(advertisment2);
-        advertisments.add(advertisment);
-
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference myRef = database.getReference("advertisments");
-//        String key = myRef.push().getKey();
+        final ArrayList<Advertisment> advertisments = new ArrayList<Advertisment>();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewAdapter = new RecyclerViewAdapter(this, advertisments);
@@ -98,11 +84,10 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.ItemCl
             }
         });
 
-        // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("temp");
+        DatabaseReference myRef = database.getReference("advertisments");
 
-        myRef.child("message").setValue("Szia sanyi");
+        //myRef.child("message").setValue("Szia sanyi");
 
         // Read from the database
         myRef.addValueEventListener(new ValueEventListener() {
@@ -110,8 +95,18 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.ItemCl
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                String value = dataSnapshot.child("message").getValue(String.class);
-                Log.d("DEBUG", "Value is: " + value);
+                //String value = dataSnapshot.getKey().child("name").getValue(String.class);
+                advertisments.clear();
+                for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()){
+                    String name = (String) tempSnapshot.child("name").getValue();
+                    String details = (String) tempSnapshot.child("details").getValue();
+                    Log.d("DEBUG", "Title: " + name + ", Details: " + details);
+                    Advertisment adv = new Advertisment();
+                    adv.setTitle(name);
+                    adv.setDescription(details);
+                    advertisments.add(adv);
+                    recyclerViewAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override
