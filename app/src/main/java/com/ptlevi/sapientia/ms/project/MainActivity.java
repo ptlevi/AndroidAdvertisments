@@ -12,9 +12,11 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -100,10 +102,12 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.ItemCl
                 for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()){
                     String name = (String) tempSnapshot.child("name").getValue();
                     String details = (String) tempSnapshot.child("details").getValue();
-                    Log.d("DEBUG", "Title: " + name + ", Details: " + details);
+                    String photo = (String) tempSnapshot.child("photo").getValue();
+                    Log.d("DEBUG", "Title: " + name + ", Details: " + details + ", Photo: " + photo);
                     Advertisment adv = new Advertisment();
                     adv.setTitle(name);
                     adv.setDescription(details);
+                    adv.setImage(photo);
                     advertisments.add(adv);
                     recyclerViewAdapter.notifyDataSetChanged();
                 }

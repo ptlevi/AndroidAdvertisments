@@ -15,4 +15,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <string name="progress_uploading">Uploading…</string>
+    <string name="upload_success">Upload finished</string>
+    <string name="upload_failure">Upload failed</string>
 </resources>
