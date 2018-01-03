@@ -93,7 +93,7 @@ public class AddActivity extends AppCompatActivity {
                 mAuth = FirebaseAuth.getInstance();
                 if(mAuth.getCurrentUser() == null){
                     Toast.makeText(AddActivity.this, "You are not logged in!", Toast.LENGTH_SHORT).show();
-                    uId = "bad";
+                    return;
                 } else {
                     uId = mAuth.getCurrentUser().getUid();
                 }

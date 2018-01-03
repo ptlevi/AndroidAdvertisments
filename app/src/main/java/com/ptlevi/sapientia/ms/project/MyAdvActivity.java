@@ -54,6 +54,7 @@ public class MyAdvActivity extends AppCompatActivity implements RecyclerViewAdap
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 //String value = dataSnapshot.getKey().child("name").getValue(String.class);
+                advertisments.clear();
                 for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()){
                     String tId = (String) tempSnapshot.child("user").getValue();
                     Boolean del;
@@ -65,6 +66,7 @@ public class MyAdvActivity extends AppCompatActivity implements RecyclerViewAdap
                         String photo = (String) tempSnapshot.child("photo").getValue();
                         Log.d("DEBUG", "Title: " + name + ", Details: " + details + ", Photo: " + photo);
                         Advertisment adv = new Advertisment();
+                        adv.setId(tempSnapshot.getKey());
                         adv.setTitle(name);
                         adv.setDescription(details);
                         adv.setImage(photo);
@@ -96,6 +98,7 @@ public class MyAdvActivity extends AppCompatActivity implements RecyclerViewAdap
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference myRef = database.getReference("advertisments");
                         myRef.child(advertisments.get(position).getId()).child("isDeleted").setValue(true);
+                        recyclerViewAdapter.notifyDataSetChanged();
                         Log.d("Click", "Deleted");
                     }
                 })

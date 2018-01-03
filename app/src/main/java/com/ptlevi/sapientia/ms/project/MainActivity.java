@@ -29,9 +29,13 @@ import java.util.ArrayList;
 
 public class MainActivity extends Activity implements RecyclerViewAdapter.ItemClickListener {
 
+    private static final String TAG = "MainActivity";
+
     private RecyclerViewAdapter recyclerViewAdapter;
     private RecyclerView recyclerView;
     private FirebaseAuth mAuth;
+
+    private ArrayList<Advertisment> advertisments = new ArrayList<Advertisment>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +47,7 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.ItemCl
 
         recyclerView = (RecyclerView) findViewById(R.id.rv_items);
 
-        final ArrayList<Advertisment> advertisments = new ArrayList<Advertisment>();
+        //final ArrayList<Advertisment> advertisments = new ArrayList<Advertisment>();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewAdapter = new RecyclerViewAdapter(this, advertisments);
@@ -110,6 +114,7 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.ItemCl
                         String photo = (String) tempSnapshot.child("photo").getValue();
                         Log.d("DEBUG", "Title: " + name + ", Details: " + details + ", Photo: " + photo);
                         Advertisment adv = new Advertisment();
+                        adv.setId(tempSnapshot.getKey());
                         adv.setTitle(name);
                         adv.setDescription(details);
                         adv.setImage(photo);
@@ -130,6 +135,13 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.ItemCl
 
     @Override
     public void onItemClick(View view, int position) {
-        Log.d("Mukszik", "ennyiedik: " + position);
+        Log.d(TAG, "ennyiedik: " + position);
+        Log.d(TAG, "ID: " + advertisments.get(position).getId());
+        //Log.d("Mukszik", "Title: " + advertisments.get(position).getTitle());
+        //Log.d("Mukszik", "Description: " + advertisments.get(position).getDescription());
+
+        Intent i = new Intent(this, AdvertismentActivity.class);
+        i.putExtra("id", advertisments.get(position).getId());
+        startActivity(i);
     }
 }

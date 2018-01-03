@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/IVimage"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/profile_button"/>
+    <TextView
+        android:id="@+id/TVtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/IVimage"
+        android:text="Title"
+        android:textSize="25dp"/>
+    <TextView
+        android:id="@+id/TVdetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/TVtitle"
+        android:text="Details" />
+    <android.support.v7.widget.CardView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:elevation="12dp"
+        android:id="@+id/CVprofile"
+        android:layout_below="@+id/TVdetail"
+        app:cardCornerRadius="35dp"
+        android:innerRadius="0dp"
+        android:shape="ring"
+        android:thicknessRatio="1.9">
+        <ImageView
+            android:layout_height="70dp"
+            android:layout_width="match_parent"
+            android:id="@+id/IVprofile"
+            android:src="@drawable/profile_button"
+            android:layout_alignParentTop="true"
+            android:scaleType="centerCrop"
+            android:background="@null"
+            android:layout_centerHorizontal="true">
+        </ImageView>
+    </android.support.v7.widget.CardView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/CVprofile"
+        android:id="@+id/TVprofilename"
+        android:text="Creator name"/>
+
+</RelativeLayout>
