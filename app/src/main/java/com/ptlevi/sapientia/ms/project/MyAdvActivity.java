@@ -1,24 +1,15 @@
 package com.ptlevi.sapientia.ms.project;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Handler;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,23 +18,19 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class MainActivity extends Activity implements RecyclerViewAdapter.ItemClickListener {
+public class MyAdvActivity extends AppCompatActivity implements RecyclerViewAdapter.ItemClickListener {
 
+    private FirebaseAuth mAuth;
     private RecyclerViewAdapter recyclerViewAdapter;
     private RecyclerView recyclerView;
-    private FirebaseAuth mAuth;
 
+    ArrayList<Advertisment> advertisments = new ArrayList<Advertisment>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_main);
-
-        mAuth = FirebaseAuth.getInstance();
+        setContentView(R.layout.activity_my_adv);
 
         recyclerView = (RecyclerView) findViewById(R.id.rv_items);
-
-        final ArrayList<Advertisment> advertisments = new ArrayList<Advertisment>();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewAdapter = new RecyclerViewAdapter(this, advertisments);
@@ -51,60 +38,28 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.ItemCl
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerViewAdapter.notifyDataSetChanged();
 
+        setTitle("My Advertisments");
 
-        Button BTadd = findViewById(R.id.BTadd);
-
-        BTadd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mAuth.getCurrentUser() != null){
-                    //TODO
-                    // go to the add activity
-                    Toast.makeText(MainActivity.this, "addActivity", Toast.LENGTH_SHORT).show();
-                    Intent addIntent = new Intent(MainActivity.this, AddActivity.class);
-                    startActivity(addIntent);
-                } else {
-                    //TODO
-                    // go to the login activity
-                    Toast.makeText(MainActivity.this, "LoginActivity", Toast.LENGTH_SHORT).show();
-                    Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-                    startActivity(loginIntent);
-                }
-            }
-        });
-
-        ImageView IVprofile = findViewById(R.id.IVprofile);
-
-        IVprofile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO
-                // go to the login activity
-                Toast.makeText(MainActivity.this, "LoginActivity", Toast.LENGTH_SHORT).show();
-                Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(loginIntent);
-            }
-        });
+        mAuth = FirebaseAuth.getInstance();
+        final String uId;
+        uId = mAuth.getCurrentUser().getUid();
+        Log.d("Uid:","UID" + uId);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("advertisments");
-
-        //myRef.child("message").setValue("Szia sanyi");
-
-        // Read from the database
+        final String myId = (String) uId;
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 //String value = dataSnapshot.getKey().child("name").getValue(String.class);
-                advertisments.clear();
                 for(DataSnapshot tempSnapshot : dataSnapshot.getChildren()){
+                    String tId = (String) tempSnapshot.child("user").getValue();
                     Boolean del;
                     del = (Boolean) tempSnapshot.child("isDeleted").getValue();
                     if(del == null) del = false;
-
-                    if(!del){
+                    if(uId.equals(tId) && !del) {
                         String name = (String) tempSnapshot.child("name").getValue();
                         String details = (String) tempSnapshot.child("details").getValue();
                         String photo = (String) tempSnapshot.child("photo").getValue();
@@ -125,11 +80,34 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.ItemCl
                 Log.w("DEBUG", "Log In failed", error.toException());
             }
         });
-
     }
-
     @Override
-    public void onItemClick(View view, int position) {
-        Log.d("Mukszik", "ennyiedik: " + position);
+    public void onItemClick(View view, final int position) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MyAdvActivity.this);
+        // set title
+        alertDialogBuilder.setTitle("Delete");
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("Are you sure you want to delete?")
+                .setCancelable(false)
+                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        // TODO implement yes
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef = database.getReference("advertisments");
+                        myRef.child(advertisments.get(position).getId()).child("isDeleted").setValue(true);
+                        Log.d("Click", "Deleted");
+                    }
+                })
+                .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //TODO implement no
+                        Log.d("Click", "Not deleted");
+                    }
+                });
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
     }
 }

@@ -105,6 +105,7 @@ public class AddActivity extends AppCompatActivity {
                 myRef.child(key).child("details").setValue(ETdetails.getText().toString());
                 myRef.child(key).child("photo").setValue(mDownloadUrl.toString());
                 myRef.child(key).child("user").setValue(uId);
+                myRef.child(key).child("isDeleted").setValue(false);
 
                 finish();
             }

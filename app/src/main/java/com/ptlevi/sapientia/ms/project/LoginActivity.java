@@ -48,8 +48,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.ProviderQueryResult;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,68 +87,136 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        // Set up the login form.
-        mEmailView = findViewById(R.id.ETemail);
-
-        mPasswordView = (EditText) findViewById(R.id.ETpassword);
-
-        Button mEmailSignInButton = (Button) findViewById(R.id.BTemailSignIn);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signIn(mEmailView.getText().toString(), mPasswordView.getText().toString());
-            }
-        });
-
-        Button mEmailSignUpButton = (Button) findViewById(R.id.BTemailSignUp);
-        mEmailSignUpButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createAccount(mEmailView.getText().toString(), mPasswordView.getText().toString());
-            }
-        });
-
-        Button mSignOutButton = (Button) findViewById(R.id.BTsignOut);
-        mSignOutButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signOut();
-            }
-        });
-
-        // [START config_signin]
-        // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        // [END config_signin]
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        // connection failed, should be handled
-
-                        Toast.makeText(LoginActivity.this, "Google login failed.", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
-        SignInButton mGoogleSignInButton = findViewById(R.id.BTgoogleSignIn);
-        mGoogleSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-                startActivityForResult(signInIntent, RC_SIGN_IN);
-            }
-        });
-
-        // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
+        if(mAuth.getCurrentUser()!=null) {
+
+            setTitle("Profile");
+            setContentView(R.layout.activity_profile);
+
+            final String uId;
+            uId = mAuth.getCurrentUser().getUid();
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            final DatabaseReference myRef = database.getReference("user");
+
+            final EditText mFname = (EditText) findViewById(R.id.ETfname);
+            final EditText mLname = (EditText) findViewById(R.id.ETlname);
+            final EditText mTel = (EditText) findViewById(R.id.ETtel);
+            final TextView mEmail = (TextView) findViewById(R.id.TVemail);
+
+            myRef.addValueEventListener(new ValueEventListener(){
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // This method is called once with the initial value and again
+                    // whenever data at this location is updated.
+                    //String value = dataSnapshot.getKey().child("name").getValue(String.class);
+                    String fname = (String) dataSnapshot.child(uId).child("FirstName").getValue(String.class);
+                    Log.d("DEBUG", "Title: " + fname );
+                    mFname.setText(fname);
+
+                    String lname = (String) dataSnapshot.child(uId).child("LastName").getValue(String.class);
+                    Log.d("DEBUG", "Title: " + lname );
+                    mLname.setText(lname);
+
+                    String tel = (String) dataSnapshot.child(uId).child("Telephone").getValue(String.class);
+                    Log.d("DEBUG", "Title: " + tel );
+                    mTel.setText(tel);
+
+                    String email = (String) dataSnapshot.child(uId).child("email").getValue(String.class);
+                    Log.d("DEBUG", "Title: " + email );
+                    mEmail.setText(email);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.w("DEBUG", "Log In failed", error.toException());
+                }
+            });
+
+            Button mSaveChanges = (Button) findViewById(R.id.BTsave);
+            mSaveChanges.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    myRef.child(uId).child("FirstName").setValue(mFname.getText().toString());
+                    myRef.child(uId).child("LastName").setValue(mLname.getText().toString());
+                    myRef.child(uId).child("Telephone").setValue(mTel.getText().toString());
+                }
+            });
+            Button mMyAdv = (Button) findViewById(R.id.BTmyadv);
+            mMyAdv.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View v) {
+                    Toast.makeText(LoginActivity.this, "MyAdv", Toast.LENGTH_SHORT).show();
+                    Intent addIntent = new Intent(LoginActivity.this, MyAdvActivity.class);
+                    startActivity(addIntent);
+                }
+            });
+        }
+        else {
+            setTitle("Sign In");
+            setContentView(R.layout.activity_login);
+            // Set up the login form.
+            mEmailView = findViewById(R.id.ETemail);
+
+            mPasswordView = (EditText) findViewById(R.id.ETpassword);
+
+            Button mEmailSignInButton = (Button) findViewById(R.id.BTemailSignIn);
+            mEmailSignInButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    signIn(mEmailView.getText().toString(), mPasswordView.getText().toString());
+                }
+            });
+
+            Button mEmailSignUpButton = (Button) findViewById(R.id.BTemailSignUp);
+            mEmailSignUpButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    createAccount(mEmailView.getText().toString(), mPasswordView.getText().toString());
+                }
+            });
+
+            Button mSignOutButton = (Button) findViewById(R.id.BTsignOut);
+            mSignOutButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    signOut();
+                }
+            });
+
+            // [START config_signin]
+            // Configure Google Sign In
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build();
+            // [END config_signin]
+
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .enableAutoManage(this /* FragmentActivity */, new GoogleApiClient.OnConnectionFailedListener() {
+                        @Override
+                        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                            // connection failed, should be handled
+
+                            Toast.makeText(LoginActivity.this, "Google login failed.", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                    .build();
+
+            SignInButton mGoogleSignInButton = findViewById(R.id.BTgoogleSignIn);
+            mGoogleSignInButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                    startActivityForResult(signInIntent, RC_SIGN_IN);
+                }
+            });
+
+            // [START initialize_auth]
+            mAuth = FirebaseAuth.getInstance();
+            // [END initialize_auth]
+        }
     }
 
     private boolean isEmailValid(String email) {
@@ -355,8 +426,7 @@ public class LoginActivity extends AppCompatActivity {
                     // this value to authenticate with your backend server, if
                     // you have one. Use User.getToken() instead.
                 } else {
-                    email = "nincs";
-                    uid = "nem jo";
+                    return;
                 }
 
                 // Write a message to the database

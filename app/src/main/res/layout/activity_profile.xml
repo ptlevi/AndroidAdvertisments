@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.ptlevi.sapientia.ms.project.AddActivity">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:elevation="12dp"
+        android:id="@+id/view2"
+        app:cardCornerRadius="35dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:innerRadius="0dp"
+        android:shape="ring"
+        android:thicknessRatio="1.9">
+        <ImageButton
+            android:layout_height="70dp"
+            android:layout_width="match_parent"
+            android:id="@+id/IVprofile"
+            android:src="@drawable/profile_button"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:background="@null"
+            android:layout_centerHorizontal="true">
+        </ImageButton>
+    </android.support.v7.widget.CardView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/TVemail"
+        android:layout_centerVertical="true"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/BTmyadv"
+            android:text="My Advertisments"
+            android:layout_gravity="center_horizontal"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/TVfname"
+                android:layout_centerVertical="true"
+                android:text="First Name:"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ETfname"
+                android:inputType="textCapSentences"
+                android:layout_toRightOf="@+id/TVfname"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/TVlname"
+                android:layout_centerVertical="true"
+                android:text="Last Name:"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ETlname"
+                android:layout_toRightOf="@+id/TVlname"
+                android:inputType="textMultiLine"/>
+        </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TVtel"
+            android:layout_centerVertical="true"
+            android:text="Telephone:"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ETtel"
+            android:inputType="textCapSentences"
+            android:layout_toRightOf="@+id/TVtel"/>
+    </RelativeLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/BTsave"
+        android:text="Save Changes"
+        android:layout_gravity="center_horizontal"/>
+
+</LinearLayout>

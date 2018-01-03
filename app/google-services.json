@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "22135295189-rfhtq4umtnteqbb41v2qqcsam5s5ok4k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ptlevi.sapientia.ms.project",
+            "certificate_hash": "3492a92ca9d5c4caed110d3d0bb941e09c2e3414"
+          }
+        },
+        {
           "client_id": "22135295189-319gnvubu7reh2rrc16pnq7qk6klnt6n.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
