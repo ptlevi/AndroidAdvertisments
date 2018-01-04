@@ -18,6 +18,11 @@ public class AdvertismentActivity extends AppCompatActivity {
 
     private static final String TAG = "AdvertismentActivity";
 
+    /**
+     * Az onCreate-ben megkapunk mindig az adott hirdetésnek az ID-ját
+     * és azt felhasználva lekérjük a részletesebb adatait a Firebase adatbázisból
+     * és megjeleníti azt a felhasználó számára
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

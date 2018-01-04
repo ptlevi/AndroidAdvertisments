@@ -41,6 +41,16 @@ public class AddActivity extends AppCompatActivity {
     private Uri mDownloadUrl = null;
     private Uri mFileUri = null;
 
+    /**
+     * Az onCreate-ben beállítjuk a gombokat, hogy mit csináljanak ha a
+     * felhasználó rákattint
+     * Az Upload gomb feltölt egy képet
+     * Az OK gomb lementi a beírt adatokat a Firebase adatbázisába, hogyha
+     * ki van töltve minden mező. ELlenkező esetben tudatjuk a felhasználóval
+     * egy Toast segítségével, hogy minden mezőt ki kell tölteni
+     * A gombokon kívül még egy BroadcastReceivert is létrehozunk,
+     * ami az Upload gomb megnyomásakor feltölti az adott képet
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +122,9 @@ public class AddActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * @param  intent  Ha az intent-nek van extra adata, akkor frissíti az UI-t az adatokkal
+     */
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -123,6 +136,10 @@ public class AddActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Az onStart(), amikor a felhasználó elindítja az alkalmazást,
+     * akkor frissíti az UI-t és létrehoz egy lokális BroadcastReceiver-t
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -133,6 +150,10 @@ public class AddActivity extends AppCompatActivity {
         manager.registerReceiver(mBroadcastReceiver, MyUploadService.getIntentFilter());
     }
 
+    /**
+     * Az onStop(), amikor a felhasználó bezárja az alkalmazást,
+     * akkor leállítódik a BroadcastReceiver
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -141,6 +162,11 @@ public class AddActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
     }
 
+    /**
+     * Az out változót feltölti a menteni kívánt adatokkal
+     *
+     * @param  out  az extrákat tartalmazó Boundle típusú változó
+     */
     @Override
     public void onSaveInstanceState(Bundle out) {
         super.onSaveInstanceState(out);
@@ -148,6 +174,15 @@ public class AddActivity extends AppCompatActivity {
         out.putParcelable(KEY_DOWNLOAD_URL, mDownloadUrl);
     }
 
+    /**
+     * Az onActivityResoult-ban megadjuk, hogy amikor visszatérített
+     * egy helyes adatot, akkor feltöltjük a képet a Firebase Storage-ba
+     * Ellenkező esetben, ha nem helyes az adat akkor kiírjuk a hibát.
+     *
+     * @param  requestCode  milyen kódú activity-ből tért vissza
+     * @param  resultCode helyes e a visszatérítési érték
+     * @param  data a visszatérített adatok
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
@@ -166,6 +201,12 @@ public class AddActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Ebben a függvényben megtudjuk, hogy hibás volt e a feltöltés vagy sikeres és
+     * utána frissítjük az UI-t
+     *
+     * @param  intent  ide kapja meg, hogy hibás volt a feltöltés vagy sikeres
+     */
     private void onUploadResultIntent(Intent intent) {
         // Got a new intent from MyUploadService with a success or failure
         mDownloadUrl = intent.getParcelableExtra(MyUploadService.EXTRA_DOWNLOAD_URL);
@@ -174,6 +215,13 @@ public class AddActivity extends AppCompatActivity {
         updateUI(mAuth.getCurrentUser());
     }
 
+    /**
+     * Az uploadFromUri függvényben a paraméterként kapott képet
+     * egy Service segítségével feltöltjük a Firebase Storage-ba
+     * és megjelenítünk egy töltés dialogot, amíg a feltöltés tart.
+     *
+     * @param  fileUri  A kép Uri típusú fájlja
+     */
     private void uploadFromUri(Uri fileUri) {
         Log.d(TAG, "uploadFromUri:src:" + fileUri.toString());
 
@@ -194,6 +242,12 @@ public class AddActivity extends AppCompatActivity {
         showProgressDialog(getString(R.string.progress_uploading));
     }
 
+    /**
+     * A showProgressDialog függvény megjelenít egy töltési ablakot
+     * a paraméterben megadott szöveggel
+     *
+     * @param  caption  a szöveg, amit mutasson a töltés közben
+     */
     private void showProgressDialog(String caption) {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
@@ -204,12 +258,22 @@ public class AddActivity extends AppCompatActivity {
         mProgressDialog.show();
     }
 
+    /**
+     * A hideProgressDialog függvény eltűnteti a töltési ablakot,
+     * ha az meg volt jelenítve
+     */
     private void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
     }
 
+    /**
+     * Az updateUI függvény frissíti a képernyőt (UI-t), jelen esetben
+     * beilleszti azt a képet, amit feltöltöttünk
+     *
+     * @param  user  a bejelentkezett Firebase felhasználót kell tartalmazza
+     */
     private void updateUI(FirebaseUser user) {
         // Signed in or Signed out
         if (user == null) {
@@ -231,6 +295,10 @@ public class AddActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * A launchCamera függvény megnyitja a felhasználó galériáját és
+     * ami képet ott kiválaszt, az fog visszatérülni az onActivityResult
+     */
     private void launchCamera() {
         Log.d(TAG, "launchCamera");
 

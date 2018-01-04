@@ -37,6 +37,16 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.ItemCl
 
     private ArrayList<Advertisment> advertisments = new ArrayList<Advertisment>();
 
+    /**
+     * Az onCreate-ben (az Activity indulásakor) lekérjük a már meglévő
+     * hirdetéseket a Firebase adatbázisból és kilistázzuk azokat a
+     * RexyxlerView segítségével.
+     * Ezen kívül van egy Hozzáadás (Add) gonbunk, aminek megadjuk, hogy ha
+     * a felhasználó be van jelentkezve akkor az AddActivity hívódjon meg,
+     * és ha nincs, akkor a LoginActivity hívódjon meg.
+     * Van még egy profilkép gombunk is, aminek megadjuk, hogy ha rákattintunk,
+     * akkor tudjuk ki- és bejelentkezni a felhasználói fiókunkba
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,6 +143,15 @@ public class MainActivity extends Activity implements RecyclerViewAdapter.ItemCl
 
     }
 
+    /**
+     * Az onItemClick függvény akkor hívódik meg, ha a felhasználó rákattint
+     * valamelyik hirdetésre. Amikor rákattintott, akkor lekérjük annak a hirdetésnek
+     * az azonosítóját (ID-t) és berakva azt az intentnek az extrájába
+     * meghívjuk az AdvertismentActivity-t.
+     *
+     * @param  view  a jelenlegi nézetet kapjuk meg
+     * @param  position megkapjuk, hogy melyik képre kattintottunk
+     */
     @Override
     public void onItemClick(View view, int position) {
         Log.d(TAG, "ennyiedik: " + position);

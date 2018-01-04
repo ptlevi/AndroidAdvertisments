@@ -7,6 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
 
+/**
+ * A HomeActivity csak az alkalmazás elindításakor hívódik meg
+ * és néhány másodpercig tart csak, aztán meghívódik a MainActivity,
+ * ahol már a felhasználó tud tevékenykedni
+ */
 public class HomeActivity extends Activity {
 
     @Override
