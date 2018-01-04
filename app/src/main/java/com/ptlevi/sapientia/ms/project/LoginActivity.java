@@ -84,6 +84,12 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mEmailView;
     private EditText mPasswordView;
 
+    /**
+     * A LoginActivity onCreate
+     * megnézzük, hogy az adott felhasználó be van-e már jelentkezve,
+     * ha igen, akkor lekérjük az adatait,
+     * ha nem, akkor a bejelentkezéshez szükséges ablak indul
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -219,16 +225,39 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Az isEmailValid(String email)
+     * ellenörzi, hogy az e-mail cím formálya helyes-e?
+     *
+     * @param  email  a felhasználó által megadott e-mail cím
+     * @return      visszatéríti, hogy helyes-e a paraméter ként kapott e-mail
+     */
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
         return email.contains("@") && email.contains(".");
     }
 
+    /**
+     * Az isPasswordValid(String password)
+     * ellenőrzi a jelszó méretét,
+     * ha kevesebb 6karakternél, akkor érvénytelen
+     *
+     * @param  password a felhasználó által megadott jelszó
+     * @return      visszatéríti, hogy helyes-e a paraméter ként kapott jelszó
+     */
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
         return password.length() >= 6;
     }
 
+    /**
+     * A validateForm()
+     * visszatéríti, hogy a megadott e-mail és jelszó
+     * ki van-e töltve, és ha igen az érvényes-e.
+     * Az ellenörzéshez használja az isPaswordValid és az isEmailValid függvényeket.
+     *
+     * @return      visszatéríti, hogy érvényes-e az e-mail és a jelszó
+     */
     private boolean validateForm() {
 
         // Reset errors.
@@ -278,6 +307,15 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * A createAccount(Strin email, String password)
+     * Ellenörzi, hogy helyes-e az email és a jelszó,
+     * ha igen tovább megy, és ha sikeres a regisztráció
+     * frissití az UI-t és eltárolja az adatokat Firebase-n
+     *
+     * @param  email
+     * @param  password
+     */
     private void createAccount(String email, String password) {
         Log.d("LoginActivity", "createAccount:" + email);
         if (!validateForm()) {
@@ -313,7 +351,19 @@ public class LoginActivity extends AppCompatActivity {
                 });
         // [END create_user_with_email]
     }
-
+    /**
+     * A signIn(String email, String password)
+     * A bejelentkezést oldja meg,
+     * a regisztrált email és jelszó segítségével.
+     * Ha nem érvényes a bevitt email vagy jelszó,
+     * illetve nem létezik, akkor leáll.
+     * Ha sikerül a bejelentkezés, frissití az UI-t
+     * és betölti a felhasználó adatait,
+     * ha nem sikerül, akkor megjelenít egy üzenetet.
+     *
+     * @param  email
+     * @param password
+     */
     private void signIn(String email, String password) {
         Log.d("LoginActivity", "signIn:" + email);
         if (!validateForm()) {
@@ -351,6 +401,13 @@ public class LoginActivity extends AppCompatActivity {
         // [END sign_in_with_email]
     }
 
+    /**
+     * A signOut()
+     * ellenőrzi, hogy van-e bejelentkezve felhasználó
+     * az adott eszközön,
+     * ha nincs: csak megjelenít egy üzenetet,
+     * ha van: kijelentkezik és megjelenít egy üzenetet
+     */
     private void signOut() {
         if(mAuth.getCurrentUser() == null){
             Toast.makeText(LoginActivity.this, "You are not logged in.", Toast.LENGTH_SHORT).show();
@@ -361,6 +418,14 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * A firebaseAuthWithGoogle(GoogleSignInAccount acct)
+     * Lekéri a felhasználó adatait,
+     * ha ez sikeres, akkor frissití az UI-t,
+     * bejelentkezik és betölti a felhasználó adatait,
+     * ha nem sikerül, akkor megjelenít egy üzenetet.
+     * @param acct a felhasználó által kiválasztott google account kerül bele
+     */
     // [START auth_with_google]
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d("LoginActivity", "firebaseAuthWithGoogle:" + acct.getId());
@@ -398,6 +463,16 @@ public class LoginActivity extends AppCompatActivity {
     }
     // [END auth_with_google]
 
+    /**
+     * Az onActivityResult(int requestCode, int resultCode, Intent data)
+     * Ellenőrzi, hogy a bejelentkezés sikeres volt-e,
+     * ha igen, elmenti az adatokat a firebasen,
+     * majd lekéri az aktuális felhasználó adatait
+     *
+     * @param  requestCode milyen kódú activityből tért vissza
+     * @param resultCode helyes-e a visszatérített érték
+     * @param data a visszatérített adat
+     */
     // [START onactivityresult]
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -25,6 +25,14 @@ public class MyAdvActivity extends AppCompatActivity implements RecyclerViewAdap
     private RecyclerView recyclerView;
 
     ArrayList<Advertisment> advertisments = new ArrayList<Advertisment>();
+
+    /**
+     * A MyAdvActivity onCreate
+     * Lekérjük az aktuális felhasználó ID-jét,
+     * lekérjük a felhasználó hírdetéseit,
+     * ezt egy listában tároljuk.
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +91,17 @@ public class MyAdvActivity extends AppCompatActivity implements RecyclerViewAdap
             }
         });
     }
+
+    /**
+     * Az onItemClick(View view, final int position)
+     * Ha ráklikkel a felhasználó az egyik saját hírdetésére,
+     * megjelenik egy üzenet, melyen ha a Yes-gombra kattint,
+     * törli az adott hírdetést
+     *
+     * @param  view
+     * @param position a hírdetés aktuális poziciója
+     */
+
     @Override
     public void onItemClick(View view, final int position) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MyAdvActivity.this);
