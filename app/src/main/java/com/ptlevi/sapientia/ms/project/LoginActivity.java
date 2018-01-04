@@ -157,6 +157,15 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(addIntent);
                 }
             });
+
+            Button mSignOutButton = (Button) findViewById(R.id.BTsignOut);
+            mSignOutButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    signOut();
+                    finish();
+                }
+            });
         }
         else {
             setTitle("Sign In");
