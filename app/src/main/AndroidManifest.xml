@@ -40,10 +40,10 @@
             android:screenOrientation="portrait" />
 
         <activity android:name=".AdvertismentActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
             android:exported="false" />
 
-        <activity android:name=".MyAdvActivity"></activity>
+        <activity android:name=".MyAdvActivity" />
     </application>
 
 </manifest>
