@@ -1,7 +1,6 @@
 package com.ptlevi.sapientia.ms.project;
 
-import android.media.Image;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
